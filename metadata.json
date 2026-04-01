@@ -1,0 +1,5 @@
+{
+  "name": "Gamified Task Manager",
+  "description": "A task management system with gamification, roles (Responsabile/Player), and a detailed scoring system for bonuses and penalties.",
+  "requestFramePermissions": []
+}

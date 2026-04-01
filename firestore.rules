@@ -1,0 +1,75 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- Funzioni di Aiuto ---
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'Admin' ||
+        request.auth.token.email == "dennisbottari@gmail.com"
+      );
+    }
+
+    function isResponsabile() {
+      let user = get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+      return isAuthenticated() && (user.role == 'Responsabile' || user.role == 'Admin');
+    }
+
+    // Validazione base per l'utente
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'username', 'role', 'score', 'isApproved']);
+    }
+
+    // Validazione base per il task
+    function isValidTask(data) {
+      return data.keys().hasAll(['id', 'title', 'difficulty', 'status', 'creatorUid', 'assignees']);
+    }
+
+    // --- Regole per le Collezioni ---
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      
+      allow update: if isAuthenticated() && (
+        isAdmin() ||
+        // Il Responsabile può aggiornare punteggio e badge di chiunque (per la validazione)
+        (isResponsabile() && request.resource.data.diff(resource.data).affectedKeys().hasAny(['score', 'badges'])) ||
+        // L'utente può aggiornare il proprio profilo (solo campi base)
+        (request.auth.uid == userId && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['username', 'firstName', 'lastName', 'photoUrl']))
+      );
+      
+      allow delete: if isAdmin();
+    }
+
+    match /tasks/{taskId} {
+      allow read: if isAuthenticated();
+      
+      allow create: if isResponsabile();
+      
+      allow update: if isAuthenticated() && (
+        isAdmin() ||
+        // Il Responsabile può gestire i task (modifica o validazione)
+        isResponsabile() ||
+        // Il Player può solo accettare o inviare in revisione il task
+        (
+          request.auth.uid in resource.data.assignees &&
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']) &&
+          request.resource.data.status in ['In corso', 'In Revisione']
+        )
+      );
+      
+      allow delete: if isResponsabile() || isAdmin();
+    }
+    
+    match /test/connection {
+      allow read: if true;
+    }
+  }
+}
