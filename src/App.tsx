@@ -321,53 +321,53 @@ export default function App() {
               <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl bg-indigo-600 text-white shadow-lg shadow-indigo-200">
                 <Gamepad2 className="h-5 w-5 sm:h-6 sm:w-6" />
               </div>
-              <div>
-                <h1 className="text-base sm:text-lg font-bold tracking-tight text-slate-900">TaskQuest</h1>
-                <p className="hidden xs:block text-[10px] sm:text-xs font-medium text-slate-500">Gamified Management</p>
+              <div className="flex flex-col">
+                <h1 className="text-sm sm:text-lg font-bold tracking-tight text-slate-900 leading-none">TaskQuest</h1>
+                <p className="hidden xs:block text-[8px] sm:text-xs font-medium text-slate-500">Gamified Management</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 sm:gap-4">
-              <div className="hidden items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 md:flex">
-                <Trophy className="h-4 w-4 text-amber-500" />
-                <span className="text-sm font-bold text-slate-700">{profile.score} XP</span>
+            <div className="flex items-center gap-1.5 sm:gap-4">
+              <div className="flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 sm:px-3 sm:py-1.5">
+                <Trophy className="h-3 w-3 sm:h-4 sm:w-4 text-amber-500" />
+                <span className="text-[10px] sm:text-sm font-bold text-slate-700">{profile.score} <span className="hidden xs:inline">XP</span></span>
               </div>
-              <div className="flex items-center gap-1 sm:gap-3 border-l border-slate-200 pl-2 sm:pl-4">
-                <div className="text-right hidden sm:block">
+              <div className="flex items-center gap-1 sm:gap-3 border-l border-slate-200 pl-1.5 sm:pl-4">
+                <div className="text-right hidden md:block">
                   <p className="text-sm font-semibold text-slate-900">{profile.username}</p>
                   <p className="text-xs font-medium text-slate-500">
                     {profile.role === 'Admin' ? 'Admin' : profile.role === 'Responsabile' ? 'Responsabile' : 'Player'}
                   </p>
                 </div>
-                <Button variant="ghost" size="icon" onClick={() => setShowProfileModal(true)} className="rounded-full">
-                  <Settings className="h-5 w-5" />
+                <Button variant="ghost" size="icon" onClick={() => setShowProfileModal(true)} className="rounded-full h-8 w-8 sm:h-10 sm:w-10">
+                  <Settings className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
-                <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full">
-                  <LogOut className="h-5 w-5" />
+                <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full h-8 w-8 sm:h-10 sm:w-10">
+                  <LogOut className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </div>
             </div>
           </div>
         </header>
 
-        <main className="container mx-auto px-4 py-8">
-          <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
+        <main className="container mx-auto px-4 py-6 sm:py-8">
+          <div className="grid gap-6 lg:gap-8 lg:grid-cols-[1fr_300px]">
             {/* Main Content */}
-            <div className="space-y-8">
-              <div className="flex items-center justify-between">
+            <div className="space-y-6 sm:space-y-8 order-2 lg:order-1">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-2xl font-bold text-slate-900">
+                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
                     {profile.role === 'Admin' ? 'Pannello Admin' : profile.role === 'Responsabile' ? 'Gestione Task' : 'I Miei Task'}
                   </h2>
-                  <p className="text-slate-500">
+                  <p className="text-xs sm:text-sm text-slate-500">
                     {(profile.role === 'Responsabile' || profile.role === 'Admin')
                       ? 'Crea e valida i task per il tuo team.' 
                       : 'Completa i task assegnati per guadagnare XP.'}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
                   {profile.role === 'Admin' && (
-                    <div className="mr-4 flex rounded-lg bg-slate-100 p-1">
+                    <div className="flex rounded-lg bg-slate-100 p-1 shrink-0">
                       <button
                         onClick={() => setActiveTab('tasks')}
                         className={cn(
@@ -389,15 +389,15 @@ export default function App() {
                     </div>
                   )}
                   {(profile.role === 'Responsabile' || profile.role === 'Admin') && (
-                    <Button onClick={() => setShowTaskForm(true)} className="gap-2">
-                      <Plus className="h-4 w-4" /> Nuovo Task
+                    <Button onClick={() => setShowTaskForm(true)} className="gap-2 shrink-0 py-2 sm:py-2.5">
+                      <Plus className="h-4 w-4" /> <span className="text-xs sm:text-sm">Nuovo Task</span>
                     </Button>
                   )}
                 </div>
               </div>
 
               {activeTab === 'tasks' ? (
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
                   {tasks
                     .filter(t => (profile.role === 'Responsabile' || profile.role === 'Admin') || t.assignees.includes(profile.uid))
                     .map(task => (
@@ -471,9 +471,9 @@ export default function App() {
             </div>
 
             {/* Sidebar */}
-            <aside className="space-y-8">
+            <aside className="space-y-6 sm:space-y-8 order-1 lg:order-2">
               {/* Leaderboard */}
-              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
                 <div className="mb-4 flex items-center gap-2">
                   <Trophy className="h-5 w-5 text-amber-500" />
                   <h3 className="font-bold text-slate-900">Classifica Player</h3>
@@ -504,7 +504,7 @@ export default function App() {
 
               {/* Badges Section */}
               {profile.role === 'Player' && (
-                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
                   <div className="mb-4 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Medal className="h-5 w-5 text-indigo-500" />
@@ -533,11 +533,11 @@ export default function App() {
                           >
                             <BadgeIcon name={badge.icon} className={cn("h-6 w-6", isEarned ? badge.color : "text-slate-400")} />
                             
-                            {/* Tooltip */}
-                            <div className="absolute bottom-full left-1/2 mb-2 hidden w-48 -translate-x-1/2 flex-col items-center group-hover:flex z-10">
-                              <div className="rounded-lg bg-slate-900 px-3 py-2 text-center shadow-xl">
-                                <p className="text-xs font-bold text-white">{badge.name}</p>
-                                <p className="mt-1 text-[10px] text-slate-400 leading-tight">{badge.description}</p>
+                            {/* Tooltip - Adjusted for mobile */}
+                            <div className="absolute bottom-full left-1/2 mb-2 hidden w-32 sm:w-48 -translate-x-1/2 flex-col items-center group-hover:flex z-10 pointer-events-none">
+                              <div className="rounded-lg bg-slate-900 px-2 sm:px-3 py-1.5 sm:py-2 text-center shadow-xl">
+                                <p className="text-[10px] sm:text-xs font-bold text-white">{badge.name}</p>
+                                <p className="mt-1 text-[8px] sm:text-[10px] text-slate-400 leading-tight">{badge.description}</p>
                               </div>
                               <div className="h-2 w-2 rotate-45 bg-slate-900 -mt-1"></div>
                             </div>
@@ -550,18 +550,18 @@ export default function App() {
               )}
 
               {/* Stats Summary */}
-              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
                 <h3 className="mb-4 font-bold text-slate-900">Riepilogo</h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   <div className="rounded-xl bg-indigo-50 p-3 text-center">
-                    <p className="text-xs font-semibold text-indigo-600 uppercase tracking-wider">In Corso</p>
-                    <p className="text-2xl font-bold text-indigo-900">
+                    <p className="text-[10px] font-semibold text-indigo-600 uppercase tracking-wider">In Corso</p>
+                    <p className="text-xl sm:text-2xl font-bold text-indigo-900">
                       {tasks.filter(t => t.status === 'In corso').length}
                     </p>
                   </div>
                   <div className="rounded-xl bg-emerald-50 p-3 text-center">
-                    <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Finiti</p>
-                    <p className="text-2xl font-bold text-emerald-900">
+                    <p className="text-[10px] font-semibold text-emerald-600 uppercase tracking-wider">Finiti</p>
+                    <p className="text-xl sm:text-2xl font-bold text-emerald-900">
                       {tasks.filter(t => t.status === 'Completato').length}
                     </p>
                   </div>
@@ -705,63 +705,63 @@ function ProfileModal({ profile, onClose, onUpdateProfile }: {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-2 sm:p-4 backdrop-blur-sm">
       <motion.div 
-        initial={{ scale: 0.9, opacity: 0 }}
+        initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl"
+        className="w-full max-w-md max-h-[95vh] overflow-hidden rounded-2xl sm:rounded-3xl bg-white shadow-2xl flex flex-col"
       >
-        <div className="p-4 sm:p-6 border-b border-slate-100 flex items-center justify-between bg-indigo-600 text-white">
+        <div className="p-4 sm:p-6 border-b border-slate-100 flex items-center justify-between bg-indigo-600 text-white shrink-0">
           <div className="flex items-center gap-2">
-            <UserCircle className="h-6 w-6" />
-            <h2 className="text-lg sm:text-xl font-bold">Area Personale</h2>
+            <UserCircle className="h-5 w-5 sm:h-6 sm:w-6" />
+            <h2 className="text-base sm:text-xl font-bold">Area Personale</h2>
           </div>
-          <Button variant="ghost" size="icon" onClick={onClose} className="text-white hover:bg-white/10">
-            <X className="h-5 w-5" />
+          <Button variant="ghost" size="icon" onClick={onClose} className="text-white hover:bg-white/10 h-8 w-8 sm:h-10 sm:w-10">
+            <X className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
         </div>
 
-        <div className="p-4 sm:p-6 space-y-6 sm:space-y-8 max-h-[80vh] overflow-y-auto">
+        <div className="p-4 sm:p-6 space-y-6 sm:space-y-8 overflow-y-auto">
           {/* Name Section */}
           <section>
-            <h3 className="mb-4 flex items-center gap-2 font-bold text-slate-900">
+            <h3 className="mb-4 flex items-center gap-2 font-bold text-slate-900 text-sm sm:text-base">
               <UserIcon className="h-4 w-4 text-indigo-500" /> Informazioni Personali
             </h3>
             <form onSubmit={handleUpdateProfile} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-500 uppercase">Username</label>
+                <label className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase">Username</label>
                 <input
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                   placeholder="Username"
                   required
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-500 uppercase">Nome</label>
+                  <label className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase">Nome</label>
                   <input
                     type="text"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                     placeholder="Nome"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-500 uppercase">Cognome</label>
+                  <label className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase">Cognome</label>
                   <input
                     type="text"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                     placeholder="Cognome"
                   />
                 </div>
               </div>
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" className="w-full py-2.5 sm:py-3" disabled={loading}>
                 {loading ? "Salvataggio..." : "Salva Modifiche"}
               </Button>
             </form>
@@ -771,44 +771,44 @@ function ProfileModal({ profile, onClose, onUpdateProfile }: {
 
           {/* Password Section */}
           <section>
-            <h3 className="mb-4 flex items-center gap-2 font-bold text-slate-900">
+            <h3 className="mb-4 flex items-center gap-2 font-bold text-slate-900 text-sm sm:text-base">
               <Lock className="h-4 w-4 text-indigo-500" /> Cambia Password
             </h3>
             <form onSubmit={handleChangePassword} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-500 uppercase">Password Attuale</label>
+                <label className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase">Password Attuale</label>
                 <input
                   type="password"
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                   placeholder="••••••••"
                   required
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-500 uppercase">Nuova Password</label>
+                <label className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase">Nuova Password</label>
                 <input
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                   placeholder="••••••••"
                   required
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-500 uppercase">Conferma Nuova Password</label>
+                <label className="text-[10px] sm:text-xs font-bold text-slate-500 uppercase">Conferma Nuova Password</label>
                 <input
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 sm:px-4 py-2 sm:py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                   placeholder="••••••••"
                   required
                 />
               </div>
-              <Button type="submit" variant="outline" className="w-full border-indigo-200 text-indigo-600 hover:bg-indigo-50" disabled={passwordLoading}>
+              <Button type="submit" variant="outline" className="w-full border-indigo-200 text-indigo-600 hover:bg-indigo-50 py-2.5 sm:py-3" disabled={passwordLoading}>
                 {passwordLoading ? "Aggiornamento..." : "Aggiorna Password"}
               </Button>
             </form>
@@ -1260,41 +1260,41 @@ function TaskFormModal({ onClose, players, creatorUid, task }: { onClose: () => 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-2 sm:p-4 backdrop-blur-sm">
       <motion.div 
-        initial={{ scale: 0.9, opacity: 0 }}
+        initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="w-full max-w-lg rounded-3xl bg-white p-6 sm:p-8 shadow-2xl"
+        className="w-full max-w-lg max-h-[95vh] overflow-hidden rounded-2xl sm:rounded-3xl bg-white shadow-2xl flex flex-col"
       >
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-900">{task ? 'Modifica Task' : 'Nuovo Task'}</h2>
-          <Button variant="ghost" size="icon" onClick={onClose}><X className="h-5 w-5" /></Button>
+        <div className="p-4 sm:p-6 border-b border-slate-100 flex items-center justify-between shrink-0">
+          <h2 className="text-lg sm:text-2xl font-bold text-slate-900">{task ? 'Modifica Task' : 'Nuovo Task'}</h2>
+          <Button variant="ghost" size="icon" onClick={onClose} className="h-8 w-8 sm:h-10 sm:w-10"><X className="h-4 w-4 sm:h-5 sm:w-5" /></Button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-8 space-y-4 overflow-y-auto">
           <div>
-            <label className="text-sm font-semibold text-slate-700">Titolo</label>
-            <Input value={title} onChange={e => setTitle(e.target.value)} required />
+            <label className="text-xs sm:text-sm font-semibold text-slate-700">Titolo</label>
+            <Input value={title} onChange={e => setTitle(e.target.value)} required className="mt-1" />
           </div>
           <div>
-            <label className="text-sm font-semibold text-slate-700">Descrizione</label>
+            <label className="text-xs sm:text-sm font-semibold text-slate-700">Descrizione</label>
             <textarea 
-              className="w-full rounded-lg border border-slate-200 p-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" 
+              className="mt-1 w-full rounded-lg border border-slate-200 p-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" 
               rows={3} 
               value={description} 
               onChange={e => setDescription(e.target.value)}
               required
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-semibold text-slate-700">Scadenza</label>
-              <Input type="datetime-local" value={deadline} onChange={e => setDeadline(e.target.value)} required />
+              <label className="text-xs sm:text-sm font-semibold text-slate-700">Scadenza</label>
+              <Input type="datetime-local" value={deadline} onChange={e => setDeadline(e.target.value)} required className="mt-1" />
             </div>
             <div>
-              <label className="text-sm font-semibold text-slate-700">Difficoltà</label>
+              <label className="text-xs sm:text-sm font-semibold text-slate-700">Difficoltà</label>
               <select 
-                className="w-full h-10 rounded-lg border border-slate-200 px-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="mt-1 w-full h-10 rounded-lg border border-slate-200 px-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
                 value={difficulty}
                 onChange={e => setDifficulty(e.target.value as TaskDifficulty)}
               >
@@ -1303,8 +1303,8 @@ function TaskFormModal({ onClose, players, creatorUid, task }: { onClose: () => 
             </div>
           </div>
           <div>
-            <label className="text-sm font-semibold text-slate-700">Assegna a</label>
-            <div className="mt-2 flex flex-wrap gap-2">
+            <label className="text-xs sm:text-sm font-semibold text-slate-700">Assegna a</label>
+            <div className="mt-2 flex flex-wrap gap-2 max-h-32 overflow-y-auto p-1 border border-slate-50 rounded-lg">
               {players.map(p => (
                 <button
                   key={p.uid}
@@ -1315,7 +1315,7 @@ function TaskFormModal({ onClose, players, creatorUid, task }: { onClose: () => 
                     );
                   }}
                   className={cn(
-                    "rounded-full px-3 py-1 text-xs font-medium transition-all",
+                    "rounded-full px-3 py-1 text-[10px] sm:text-xs font-medium transition-all",
                     selectedPlayers.includes(p.uid) ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                   )}
                 >
@@ -1324,7 +1324,7 @@ function TaskFormModal({ onClose, players, creatorUid, task }: { onClose: () => 
               ))}
             </div>
           </div>
-          <Button type="submit" className="w-full py-6">{task ? 'Aggiorna Task' : 'Crea Task'}</Button>
+          <Button type="submit" className="w-full py-3 sm:py-6 text-sm sm:text-base">{task ? 'Aggiorna Task' : 'Crea Task'}</Button>
         </form>
       </motion.div>
     </div>
@@ -1471,25 +1471,25 @@ function ScoringModal({ task, onClose }: { task: Task, onClose: () => void }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-2 sm:p-4 backdrop-blur-sm">
       <motion.div 
-        initial={{ scale: 0.9, opacity: 0 }}
+        initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-3xl bg-white shadow-2xl flex flex-col"
+        className="w-full max-w-4xl max-h-[95vh] overflow-hidden rounded-2xl sm:rounded-3xl bg-white shadow-2xl flex flex-col"
       >
-        <div className="p-4 sm:p-6 border-b border-slate-100 flex items-center justify-between">
+        <div className="p-4 sm:p-6 border-b border-slate-100 flex items-center justify-between shrink-0">
           <div>
-            <h2 className="text-lg sm:text-xl font-bold text-slate-900">Validazione Task</h2>
-            <p className="text-xs sm:text-sm text-slate-500">{task.title} ({task.difficulty})</p>
+            <h2 className="text-base sm:text-xl font-bold text-slate-900 leading-tight">Validazione Task</h2>
+            <p className="text-[10px] sm:text-sm text-slate-500 line-clamp-1">{task.title} ({task.difficulty})</p>
           </div>
-          <Button variant="ghost" size="icon" onClick={onClose}><X className="h-5 w-5" /></Button>
+          <Button variant="ghost" size="icon" onClick={onClose} className="h-8 w-8 sm:h-10 sm:w-10"><X className="h-4 w-4 sm:h-5 sm:w-5" /></Button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {/* Penalties */}
             <section>
-              <h3 className="mb-4 flex items-center gap-2 font-bold text-rose-600">
+              <h3 className="mb-3 sm:mb-4 flex items-center gap-2 font-bold text-rose-600 text-sm sm:text-base">
                 <MinusCircle className="h-4 w-4" /> Penali (Errori)
               </h3>
               <div className="space-y-2">
@@ -1500,12 +1500,12 @@ function ScoringModal({ task, onClose }: { task: Task, onClose: () => void }) {
                       prev.includes(p.id) ? prev.filter(id => id !== p.id) : [...prev, p.id]
                     )}
                     className={cn(
-                      "flex w-full items-center justify-between rounded-xl border p-3 text-left transition-all",
+                      "flex w-full items-center justify-between rounded-xl border p-2.5 sm:p-3 text-left transition-all",
                       selectedPenalties.includes(p.id) ? "border-rose-200 bg-rose-50" : "border-slate-100 hover:border-slate-200"
                     )}
                   >
-                    <span className="text-sm font-medium">{p.label}</span>
-                    <span className="text-sm font-bold text-rose-600">{p.value}</span>
+                    <span className="text-xs sm:text-sm font-medium">{p.label}</span>
+                    <span className="text-xs sm:text-sm font-bold text-rose-600">{p.value}</span>
                   </button>
                 ))}
               </div>
@@ -1513,7 +1513,7 @@ function ScoringModal({ task, onClose }: { task: Task, onClose: () => void }) {
 
             {/* Bonuses */}
             <section>
-              <h3 className="mb-4 flex items-center gap-2 font-bold text-emerald-600">
+              <h3 className="mb-3 sm:mb-4 flex items-center gap-2 font-bold text-emerald-600 text-sm sm:text-base">
                 <PlusCircle className="h-4 w-4" /> Bonus
               </h3>
               <div className="space-y-2">
@@ -1524,12 +1524,12 @@ function ScoringModal({ task, onClose }: { task: Task, onClose: () => void }) {
                       prev.includes(b.id) ? prev.filter(id => id !== b.id) : [...prev, b.id]
                     )}
                     className={cn(
-                      "flex w-full items-center justify-between rounded-xl border p-3 text-left transition-all",
+                      "flex w-full items-center justify-between rounded-xl border p-2.5 sm:p-3 text-left transition-all",
                       selectedBonuses.includes(b.id) ? "border-emerald-200 bg-emerald-50" : "border-slate-100 hover:border-slate-200"
                     )}
                   >
-                    <span className="text-sm font-medium">{b.label}</span>
-                    <span className="text-sm font-bold text-emerald-600">+{b.value}</span>
+                    <span className="text-xs sm:text-sm font-medium">{b.label}</span>
+                    <span className="text-xs sm:text-sm font-bold text-emerald-600">+{b.value}</span>
                   </button>
                 ))}
               </div>
@@ -1537,24 +1537,24 @@ function ScoringModal({ task, onClose }: { task: Task, onClose: () => void }) {
           </div>
         </div>
 
-        <div className="p-6 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
-          <div className="flex items-center gap-8">
+        <div className="p-4 sm:p-6 border-t border-slate-100 bg-slate-50 flex flex-col sm:flex-row items-center gap-4 sm:justify-between shrink-0">
+          <div className="flex items-center justify-center gap-4 sm:gap-8 w-full sm:w-auto">
             <div className="text-center">
-              <p className="text-[10px] font-bold uppercase text-slate-400">Base</p>
-              <p className="text-lg font-bold text-slate-700">{baseScore}</p>
+              <p className="text-[8px] sm:text-[10px] font-bold uppercase text-slate-400">Base</p>
+              <p className="text-sm sm:text-lg font-bold text-slate-700">{baseScore}</p>
             </div>
             <div className="text-center">
-              <p className="text-[10px] font-bold uppercase text-slate-400">Modificatori</p>
-              <p className={cn("text-lg font-bold", (bonusTotal + penaltyTotal) >= 0 ? "text-emerald-600" : "text-rose-600")}>
+              <p className="text-[8px] sm:text-[10px] font-bold uppercase text-slate-400">Modificatori</p>
+              <p className={cn("text-sm sm:text-lg font-bold", (bonusTotal + penaltyTotal) >= 0 ? "text-emerald-600" : "text-rose-600")}>
                 {(bonusTotal + penaltyTotal) >= 0 ? '+' : ''}{bonusTotal + penaltyTotal}
               </p>
             </div>
             <div className="text-center">
-              <p className="text-[10px] font-bold uppercase text-indigo-400">Totale</p>
-              <p className="text-2xl font-black text-indigo-600">{finalScore} XP</p>
+              <p className="text-[8px] sm:text-[10px] font-bold uppercase text-indigo-400">Totale</p>
+              <p className="text-base sm:text-2xl font-black text-indigo-600">{finalScore} XP</p>
             </div>
           </div>
-          <Button onClick={handleValidate} disabled={loading} className="px-8 py-6 text-lg">
+          <Button onClick={handleValidate} disabled={loading} className="w-full sm:w-auto px-8 py-3 sm:py-6 text-sm sm:text-lg">
             {loading ? 'Validazione...' : 'Approva e Chiudi'}
           </Button>
         </div>
@@ -1644,9 +1644,11 @@ function UserManagement({ users, onUpdateUser, onDeleteUser }: {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
         <h3 className="mb-6 text-lg font-bold text-slate-900">Gestione Utenti</h3>
-        <div className="overflow-x-auto">
+        
+        {/* Desktop Table View */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="border-b border-slate-100 text-slate-500">
@@ -1733,6 +1735,91 @@ function UserManagement({ users, onUpdateUser, onDeleteUser }: {
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Cards View */}
+        <div className="md:hidden space-y-4">
+          {users.map(u => (
+            <div key={u.uid} className="rounded-xl border border-slate-100 bg-slate-50/50 p-4 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-slate-900">{u.username}</span>
+                  <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider">{u.role}</span>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-8 w-8 text-slate-400 hover:text-rose-500 hover:bg-rose-50"
+                  onClick={() => setUserToDelete(u)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase">Ruolo</label>
+                  <select
+                    value={u.role}
+                    onChange={(e) => onUpdateUser(u.uid, { role: e.target.value as UserRole })}
+                    className="w-full rounded-md border border-slate-200 bg-white px-2 py-1 text-xs"
+                  >
+                    <option value="Player">Player</option>
+                    <option value="Responsabile">Responsabile</option>
+                    <option value="Admin">Admin</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase">Approvato</label>
+                  <div className="flex items-center">
+                    <button
+                      onClick={() => onUpdateUser(u.uid, { isApproved: !u.isApproved })}
+                      className={cn(
+                        "flex h-5 w-10 items-center rounded-full p-1 transition-colors",
+                        u.isApproved ? "bg-emerald-500" : "bg-slate-300"
+                      )}
+                    >
+                      <div className={cn(
+                        "h-3 w-3 rounded-full bg-white transition-transform",
+                        u.isApproved ? "translate-x-5" : "translate-x-0"
+                      )} />
+                    </button>
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase">Responsabile</label>
+                  {u.role === 'Player' ? (
+                    <select
+                      value={u.responsabileUid || ''}
+                      onChange={(e) => onUpdateUser(u.uid, { responsabileUid: e.target.value || deleteField() as any })}
+                      className="w-full rounded-md border border-slate-200 bg-white px-2 py-1 text-xs"
+                    >
+                      <option value="">Nessuno</option>
+                      {responsabili.map(r => (
+                        <option key={r.uid} value={r.uid}>{r.username}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <div className="text-xs text-slate-400 py-1">N/A</div>
+                  )}
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase">Punteggio (XP)</label>
+                  <input
+                    type="number"
+                    defaultValue={u.score}
+                    onBlur={(e) => {
+                      const newScore = parseInt(e.target.value);
+                      if (!isNaN(newScore) && newScore !== u.score) {
+                        onUpdateUser(u.uid, { score: newScore });
+                      }
+                    }}
+                    className="w-full rounded-md border border-slate-200 bg-white px-2 py-1 text-xs font-mono font-bold text-indigo-600"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
