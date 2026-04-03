@@ -1,5 +1,5 @@
 {
-  "name": "Gamified Task Manager",
-  "description": "A task management system with gamification, roles (Responsabile/Player), and a detailed scoring system for bonuses and penalties.",
+  "name": "Content Hero",
+  "description": "Content Hero: A gamified task management system with roles, scoring, and real-time tracking.",
   "requestFramePermissions": []
 }

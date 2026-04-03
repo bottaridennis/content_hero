@@ -26,6 +26,7 @@ export const PENALTIES: BonusPenalty[] = [
   { id: 'o_story_update', label: 'Mancato aggiornamento storyboard/indice', value: -30, category: 'Penalty' },
   { id: 'o_lie', label: 'Mentire sui task', value: -30, category: 'Penalty' },
   { id: 'o_discord', label: 'Discordia nel team', value: -45, category: 'Penalty' },
+  { id: 'o_rejection', label: 'Task Respinto', value: -25, category: 'Penalty' },
 ];
 
 export const BONUSES: BonusPenalty[] = [
@@ -98,5 +99,37 @@ export const BADGES: Badge[] = [
     icon: 'Flame',
     color: 'text-rose-500',
     requirement: { type: 'score', value: 1000 }
+  },
+  {
+    id: 'b_strategist',
+    name: 'Stratega',
+    description: 'Completa 5 task di difficoltà Argento.',
+    icon: 'Target',
+    color: 'text-indigo-400',
+    requirement: { type: 'difficulty_completed', value: 5, difficulty: 'Argento' }
+  },
+  {
+    id: 'b_infallible',
+    name: 'Infallibile',
+    description: 'Raggiungi 2500 XP.',
+    icon: 'Medal',
+    color: 'text-purple-600',
+    requirement: { type: 'score', value: 2500 }
+  },
+  {
+    id: 'b_collaborator',
+    name: 'Collaboratore',
+    description: 'Completa 20 task.',
+    icon: 'UserIcon',
+    color: 'text-blue-500',
+    requirement: { type: 'tasks_completed', value: 20 }
+  },
+  {
+    id: 'b_elite_plat',
+    name: 'Elite di Platino',
+    description: 'Completa 3 task di difficoltà Platino.',
+    icon: 'Crown',
+    color: 'text-cyan-600',
+    requirement: { type: 'difficulty_completed', value: 3, difficulty: 'Platino' }
   }
 ];
