@@ -1,5 +1,6 @@
 export type UserRole = 'Admin' | 'Responsabile' | 'Player';
-export type Area = 'Contenuti' | 'Tecnologie' | 'EGS' | 'Commerciali' | 'Direzione';
+// Le aree sono configurabili dall'Admin (metadata/areas), quindi sono stringhe libere.
+export type Area = string;
 
 export const AREAS: Area[] = ['Contenuti', 'Tecnologie', 'EGS', 'Commerciali', 'Direzione'];
 
@@ -9,7 +10,7 @@ export interface UserProfile {
   firstName?: string;
   lastName?: string;
   role: UserRole;
-  area?: Area;
+  area?: Area | null;
   score: number;
   responsabileUids?: string[];
   isApproved: boolean;
@@ -32,9 +33,25 @@ export interface Challenge {
   description: string;
   bonusXP: number;
   expiresAt: string;
-  area?: Area;
-  completedBy: string[]; // uids
+  area?: Area | null;
+  completedBy: string[]; // uids approvati (XP assegnati)
+  pendingBy?: string[]; // uids che hanno dichiarato il completamento, in attesa di verifica
+  createdBy?: string;
   createdAt: string;
+}
+
+export type RedemptionStatus = 'Richiesto' | 'Consegnato' | 'Rifiutato';
+
+export interface Redemption {
+  id: string;
+  uid: string;
+  rewardId: string;
+  rewardName: string;
+  cost: number;
+  status: RedemptionStatus;
+  createdAt: string;
+  handledAt?: string;
+  handledBy?: string;
 }
 
 export interface Badge {
@@ -72,7 +89,7 @@ export interface Task {
   acceptedBy?: string[]; // uids of users who accepted
   submittedBy?: string[]; // uids of users who submitted
   creatorUid: string;
-  area?: Area;
+  area?: Area | null;
   bonuses: string[];
   penalties: string[];
   autoBonuses?: string[];
@@ -82,6 +99,8 @@ export interface Task {
   createdAt: string;
   estimatedHours?: number;
   color?: string; // Unique color for the task
+  feedback?: string; // Ultimo feedback del revisore (es. motivo del respingimento)
+  rejections?: number; // Numero di volte in cui il task è stato respinto
 }
 
 export interface BonusPenalty {
