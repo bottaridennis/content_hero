@@ -1,20 +1,53 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Content Hero
 
-# Run and deploy your AI Studio app
+Gestione dei task gamificata: XP, livelli, badge, sfide a tempo, premi e classifiche, sincronizzati in tempo reale su Firebase.
 
-This contains everything you need to run your app locally.
+## Avvio in locale
 
-View your app in AI Studio: https://ai.studio/apps/fc20c3cb-55a3-4776-a82f-1c852c43eec2
+**Prerequisiti:** Node.js 20+
 
-## Run Locally
+1. `npm install`
+2. Copia `.env.example` in `.env.local` e inserisci la configurazione Firebase (`VITE_FIREBASE_*`).
+3. `npm run dev` → http://localhost:3000/content_hero/
 
-**Prerequisites:**  Node.js
+Comandi utili: `npm run lint` (typecheck), `npm run build`.
 
+## Funzionalità
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+| Area | Cosa fa |
+| --- | --- |
+| **Dashboard** | Livello e progressi, KPI per ruolo, task in scadenza, classifica, coda revisioni |
+| **Task** | Vista griglia o kanban, filtri per stato, ricerca, ordinamento, dettaglio con cronologia e punteggio |
+| **Revisioni** (manager) | Valutazione task con bonus/malus, respingimento con feedback, verifica sfide e consegna premi |
+| **Sfide** | Sfide a tempo per area; il player segnala il completamento, il responsabile lo approva |
+| **Traguardi** | Livelli, badge con avanzamento, catalogo premi con saldo XP spendibile |
+| **Pianificazione** | Gantt e calendario su giornate lavorative 9–18 (esclusi weekend e festività italiane) |
+| **Persone** (manager) | Approvazioni, ruoli, aree, responsabili, simulazione profilo, creazione utenti |
+| **Log** (manager) | Cronologia completa con esportazione CSV |
+| **Configurazione** (admin) | Aree, bonus/malus, badge e premi personalizzabili |
+
+Tema chiaro/scuro (automatico o manuale), layout responsive con navigazione mobile dedicata.
+
+## Struttura
+
+```
+src/
+  App.tsx                 # autenticazione, routing (#/pagina), modali globali
+  context.tsx             # stato condiviso dell'app
+  hooks/                  # sincronizzazione Firestore, tema
+  lib/                    # utilità, azioni Firestore, gestione errori
+  components/ui           # design system (Button, Modal, Input, …)
+  components/layout       # shell con sidebar e bottom nav
+  features/<sezione>/     # una cartella per pagina
+```
+
+## Regole Firestore
+
+Il file `firestore.rules` va pubblicato dopo ogni modifica:
+
+```bash
+firebase deploy --only firestore:rules
+```
+
+Le regole aggiornate sono necessarie per: accettazione/consegna dei task da parte dei player, cambio password obbligatorio,
+segnalazione delle sfide e la nuova collezione `redemptions` (richieste premi).

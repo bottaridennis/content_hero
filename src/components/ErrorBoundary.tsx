@@ -43,14 +43,14 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 p-4 text-center">
-          <div className="rounded-3xl bg-white p-8 shadow-xl max-w-md">
-            <ShieldAlert className="mx-auto mb-4 h-12 w-12 text-rose-500" />
-            <h1 className="mb-2 text-2xl font-bold text-slate-900">Ops! Qualcosa è andato storto</h1>
-            <p className="mb-6 text-slate-600">{errorMessage}</p>
+        <div className="flex min-h-dvh flex-col items-center justify-center bg-canvas p-4 text-center">
+          <div className="card max-w-md p-8 shadow-pop">
+            <ShieldAlert className="mx-auto mb-4 h-12 w-12 text-danger" />
+            <h1 className="mb-2 text-2xl font-bold text-fg">Ops! Qualcosa è andato storto</h1>
+            <p className="mb-6 text-muted">{errorMessage}</p>
             <button 
               onClick={() => window.location.reload()}
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+              className="rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-strong"
             >
               Ricarica l'app
             </button>
